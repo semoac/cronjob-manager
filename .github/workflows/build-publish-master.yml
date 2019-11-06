@@ -1,9 +1,9 @@
-name: build-publish
+name: build-publish-master
 
 on:
   push:
     branches:
-      - "!master"
+      - master
 
 jobs:
   build:
@@ -16,6 +16,4 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push
-        run: |
-          make publish.server
-          make publish.client
+        run: make publish

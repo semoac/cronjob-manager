@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := build
-.PHONY: build build.server build.client publish publish.server push.client
+.PHONY: build build.server build.client publish publish.server publish.client
 
 IMAGE ?= semoac/cronjob-manager-app
 VERSION ?= $(shell git describe --tags --always --dirty)
