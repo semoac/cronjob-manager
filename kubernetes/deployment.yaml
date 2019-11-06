@@ -1,0 +1,62 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cronjob-manager
+  labels:
+    name: cronjob-manager
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        name: cronjob-manager
+    spec:
+      serviceAccountName: manager
+      containers:
+        - image: semoac/cronjob-manager-app:server-latest
+          name: server
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "100M"
+            limits:
+              memory: "250M"
+              cpu: "100m"
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: server
+            initialDelaySeconds: 90
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: server
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+          env:
+            - name: NAMESPACES
+              value: "default"
+            - name: ENVIRONMENT
+              value: production
+          ports:
+            - containerPort: 8000
+              name: server
+          imagePullPolicy: Always
+        - image: semoac/cronjob-manager-app:client-latest
+          name: client
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "55M"
+            limits:
+              memory: "100M"
+              cpu: "100m"
+          ports:
+            - containerPort: 8080
+              name: client
+          imagePullPolicy: Always
