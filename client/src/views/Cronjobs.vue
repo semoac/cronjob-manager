@@ -41,7 +41,7 @@
                       size="sm"
                       variant="primary"
                       v-b-modal="'trigger-modal-' + cronjob.name"
-                    >Trigger!</b-button>
+                    >Run now!</b-button>
                   </b-col>
                 </b-row>
               </b-card>
