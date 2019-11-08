@@ -9,7 +9,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.filter("formatDate", function(value) {
   if (value) {
-    return moment(String(value)).format("DD/MM/YYYY hh:mm a");
+    return moment(String(value)).format("DD/MM/YYYY HH:mm");
   }
 });
 Vue.filter("formatCron", function(value) {
