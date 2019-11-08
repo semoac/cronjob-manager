@@ -24,7 +24,7 @@
                   <b-col sm="3" class="text-sm-left">
                     <b>Schedule</b>
                   </b-col>
-                  <b-col>{{ cronjob.schedule | formatCron }}</b-col>
+                  <b-col>{{ cronjob.schedule | formatCron }} (UTC)</b-col>
                 </b-row>
                 <b-row class="mb-2">
                   <b-col sm="3" class="text-sm-left">
