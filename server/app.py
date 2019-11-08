@@ -26,10 +26,14 @@ def get_namespaces():
 @app.route("/api/v1/cronjobs/<string:namespace>", methods=["GET"])
 def get_cronjobs(namespace):
     manager = km.get_manager(namespace=namespace)
-
+    cronjobs_list = manager.map_namespaced_resources()
+    cronjobs_list.sort(
+        key=lambda c: (len(c["jobs"]) > 0 and c["jobs"][-1]["start_at"] or "0"),
+        reverse=True,
+    )
     CRONJOBS = {
         "namespace": namespace,
-        "cronjobs": manager.map_namespaced_resources(),
+        "cronjobs": cronjobs_list,
         "status": "success",
     }
     return jsonify(CRONJOBS)
