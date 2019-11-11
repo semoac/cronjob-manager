@@ -194,16 +194,14 @@ export default {
       var status;
       var result = [];
       for (const job of jobs) {
-        if (job.active == true) {
+        if (job.success_count > 0) {
+          status = "Finished";
+        } else if (job.active == true) {
           status = "Running";
+        } else if (job.failure_count > 0) {
+          status = "Failed";
         } else {
-          if (job.success_count > 0) {
-            status = "Finished";
-          } else if (job.failure_count > 0) {
-            status = "Failed";
-          } else {
-            status = "Unknown";
-          }
+          status = "Failed";
         }
         result.push({
           name: job.name,
