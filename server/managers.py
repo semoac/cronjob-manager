@@ -132,20 +132,12 @@ class CronjobManager(object):
 
     def deleteJob(self, job: str) -> None:
         _ = self.batch_v1.delete_namespaced_job(job, self.namespace)
-        pod_list = self._map_namespaced_pod_from_job(
-            JobSchema().load(
-                dict(
-                    name=job,
-                    backoff_limit=1,
-                    deadline_seconds=1,
-                    success_count=1,
-                    failure_count=1,
-                    active=1,
+        self.pods = self.core_v1.list_namespaced_pod(namespace=self.namespace)
+        for pod in self.pods.items:
+            if f"{job}-" in pod.metadata.name:
+                _ = self.core_v1.delete_namespaced_pod(
+                    pod.metadata.name, self.namespace
                 )
-            )
-        )
-        for pod in pod_list:
-            _ = self.core_v1.delete_namespaced_pod(pod.name, self.namespace)
         return
 
     def newJob(self, cronjob: str) -> None:
