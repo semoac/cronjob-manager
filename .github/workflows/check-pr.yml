@@ -1,0 +1,22 @@
+name: notify-circleci-on-pr
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+    branches:
+      - devel
+    paths-ignore:
+      - .circleci
+      - .kubernetes
+      - Makefile
+      - docker-compose.yml
+
+jobs:
+  circleci-api-call:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger workflow
+        run: |
+          echo "${{ github.head_ref }}"
+          echo "${{ github.base_ref }}"
